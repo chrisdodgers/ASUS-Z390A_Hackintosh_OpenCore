@@ -228,8 +228,9 @@ This portion of the guide I will not provide support for. This is well covered i
 5. **Install macOS Sequoia**
    - Follow the macOS installation instructions on your screen. Once the installer has completed, you should be able to follow the welcome/setup screen instructions to create an account and then get to the desktop. 
 
-> [!WARNING]: Do NOT sign in with your Apple ID at the setup screen! Sign in with your Apple ID once we have root-patched wifi. *This is so we can ensure Handoff/Continuity features work properly. Since wifi at this point in the guide is broken, there is a chance signing in before fixing wifi could cause some slight issues with Handoff/Continuity down the line.* 
-
+> [!WARNING]
+>  Do NOT sign in with your Apple ID at the setup screen! Sign in with your Apple ID once we have root-patched wifi. *This is so we can ensure Handoff/Continuity features work properly. Since wifi at this point in the guide is broken, there is a chance signing in before fixing wifi could cause some slight issues with Handoff/Continuity down the line.* 
+>
 
    
 ## Post-Installation Guide:
@@ -237,9 +238,8 @@ This portion of the guide I will not provide support for. This is well covered i
 - Run MountEFI and select your installation USB and the drive you installed macOS on.
 - Copy your EFI folder from your USB EFI partition to your internal drives EFI partition
 
-> [!NOTE:]
-> 
-> - You may see a folder that already exists in your internal drives EFI folder called `APPLE`. This can be either ignored or deleted as it serves a purpose for real Macs and not Hackintosh 
+> [!NOTE]
+> You may see a folder that already exists in your internal drives EFI folder called `APPLE`. This can be either ignored or deleted as it serves a purpose for real Macs and not Hackintosh 
 > 
 
   
