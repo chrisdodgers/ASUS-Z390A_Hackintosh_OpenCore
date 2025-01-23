@@ -167,17 +167,18 @@ Download and extract the EFI Folder found in the Releases section of this repo.
 
 1. **DeviceProperties**: This guide assumes you have an AMD dGPU to drive your display. The framebuffer already specified in my EFI is `AAPL,ig-platform-id 0300913E` which is a headless framebuffer used for this scenario. If you are not using an AMD dGPU to drive your displays, you will need to specify another framebuffer! 
 
-	> [!WARNING]
-	> 
-	> You will need to follow [the framebuffer patching portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/config.plist/coffee-lake.html#deviceproperties) if you are using an iGPU to drive your display(s)!, as my guide will not cover this!
-	>
+> [!WARNING]
+> 
+> You will need to follow [the framebuffer patching portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/config.plist/coffee-lake.html#deviceproperties) if you are using an iGPU to drive your display(s)!, as my guide will not cover this!
+>
 
 
 2. **Kernel**: **IMPORTANT** (Your system may not boot if this section is not configured properly!)
    - Under `Kernel -> Quirks`, `AppleCpuPmCfgLock` and `AppleXcpmCfgLock` is set to `False` which is ideal. **In your BIOS settings, CFG-Lock MUST be set to Disabled for this configuration to work!**. 
    
-    >[!WARNING]
-    >*If for some reason you do not have a BIOS option to set your CFG-Lock to Disabled, you can temporarily change the value above to `True`. NOTE: 	 It is highly advised to instead [find a method for your motherboard to disable CFG-Lock!](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html*
+>[!WARNING]
+>*If for some reason you do not have a BIOS option to set your CFG-Lock to Disabled, you can temporarily change the value above to `True`. It is highly advised to instead [find a method for your motherboard to disable CFG-Lock!](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html*
+>
 
 3. **Wifi and Bluetooth**: This guide assumes you have a Fenvi T919 Wifi/Bluetooth card which is a BCM94360CD. Bluetooth/Wifi is required for Handoff/Continuity features to work! Intel Wifi/Bluetooth cards most likely will break many Handoff/Continuity features. If you plan on using an Intel card, you will need to follow [this portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/ktext.html#wifi-and-bluetooth) as it will not be covered in my guide/repo. *(If you do not care about wifi/bluetooth and handoff/continuity features and do not want it - this can be fully ignored.)*   
 
@@ -185,8 +186,9 @@ Download and extract the EFI Folder found in the Releases section of this repo.
    - I did not include [VoodooPS2.kext](https://github.com/acidanthera/VoodooPS2/releases) which is only needed if you plan on using a PS/2 Keyboard or Mouse. (You most will not likely need this.)
    - My NVMe drive does not require [NVMeFix.kext](https://github.com/acidanthera/NVMeFix), so I did not include it in my EFI. Your NVMe drive may require this! [*Check the compatibility of your NVMe drive.*](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/Storage.html)
 
-    > [!NOTE]: If you add these optional kexts into the `EFI -> OC -> Kexts`, you will need to do an OC Snapshot in ProperTree. You can do this by selecting `"File" -> "OC Snapshot"` in the menu and then select the OC folder in the EFI. An OC Snapshot automatically enables these kexts and automatically defines them in the `Kernel -> Add` section.   
-
+> [!NOTE]   
+>If you add these optional kexts into the `EFI -> OC -> Kexts`, you will need to do an OC Snapshot in ProperTree. You can do this by selecting `"File" -> "OC Snapshot"` in the menu and then select the OC folder in the EFI. An OC Snapshot automatically enables these kexts and automatically defines them in the `Kernel -> Add` section. 
+>
 
 5. **Misc**(optional):
    - Only if you are having issues booting and want detailed logging, set `Misc -> Debug -> AppleDebug = True` and `Misc -> Debug -> ApplePanic = True`. Also set `Misc -> Debug -> Target = 67`.
