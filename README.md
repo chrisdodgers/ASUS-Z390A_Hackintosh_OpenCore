@@ -181,7 +181,7 @@ Download and extract the EFI Folder found in the Releases section of this repo.
 >
 
 > [!IMPORTANT]
-> Your system may not boot if thie following section is not configured properly!
+> Your system may not boot if this kernel section is not configured properly!
 > 
 
 3. **Wifi and Bluetooth**: This guide assumes you have a Fenvi T919 Wifi/Bluetooth card which is a BCM94360CD. Bluetooth/Wifi is required for Handoff/Continuity features to work! Intel Wifi/Bluetooth cards most likely will break many Handoff/Continuity features. If you plan on using an Intel card, you will need to follow [this portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/ktext.html#wifi-and-bluetooth) as it will not be covered in my guide/repo. *(If you do not care about wifi/bluetooth and handoff/continuity features and do not want it - this can be fully ignored.)*   
@@ -214,7 +214,7 @@ Download and extract the EFI Folder found in the Releases section of this repo.
    - Select option (3) and enter `MacPro7,1`
    - If completed successfully, you should see what you just generated within `PlatformInfo -> Generic` (`MLB`, `ROM`, `SystemSerialNumber`, and `SystemUUID` should be populated).
 > [!IMPORTANT]
-> Your system may not boot or iServices may not work if the following section is not configured properly!
+> Your system may not boot and or iServices may not work if this section is not configured properly!
 >    
    
 
