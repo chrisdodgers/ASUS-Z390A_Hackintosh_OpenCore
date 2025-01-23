@@ -169,16 +169,20 @@ Download and extract the EFI Folder found in the Releases section of this repo.
 
 > [!WARNING]
 > 
-> You will need to follow [the framebuffer patching portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/config.plist/coffee-lake.html#deviceproperties) if you are using an iGPU to drive your display(s)!, as my guide will not cover this!
+> You will need to follow [the framebuffer patching portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/config.plist/coffee-lake.html#deviceproperties) if you are using an iGPU to drive your display(s)! My guide will not cover this!
 >
 
 
-2. **Kernel**: **IMPORTANT** (Your system may not boot if this section is not configured properly!)
+2. **Kernel**:
    - Under `Kernel -> Quirks`, `AppleCpuPmCfgLock` and `AppleXcpmCfgLock` is set to `False` which is ideal. **In your BIOS settings, CFG-Lock MUST be set to Disabled for this configuration to work!**. 
    
 >[!WARNING]
 >*If for some reason you do not have a BIOS option to set your CFG-Lock to Disabled, you can temporarily change the value above to `True`. It is highly advised to instead [find a method for your motherboard to disable CFG-Lock!](https://dortania.github.io/OpenCore-Post-Install/misc/msr-lock.html*
 >
+
+> [!IMPORTANT]
+> Your system may not boot if thie following section is not configured properly!
+> 
 
 3. **Wifi and Bluetooth**: This guide assumes you have a Fenvi T919 Wifi/Bluetooth card which is a BCM94360CD. Bluetooth/Wifi is required for Handoff/Continuity features to work! Intel Wifi/Bluetooth cards most likely will break many Handoff/Continuity features. If you plan on using an Intel card, you will need to follow [this portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/ktext.html#wifi-and-bluetooth) as it will not be covered in my guide/repo. *(If you do not care about wifi/bluetooth and handoff/continuity features and do not want it - this can be fully ignored.)*   
 
@@ -202,13 +206,16 @@ Download and extract the EFI Folder found in the Releases section of this repo.
       - `-v debug=0x100 keepsyms=1`*(Optional - if you need additional debugging enabled.*)
    - `csr-active-config`: The current specified value is `03080000`**(Partial SIP)**. This is required for root-patching wifi in macOS 14+ using [OCLP](https://github.com/dortania/OpenCore-Legacy-Patcher/releases). If you are running macOS 13 or older, or do not plan on using/patching wifi on macOS 14+ - you can fully enable SIP by setting the value to `00000000`**(Full SIP)**.
 
-7. **PlatformInfo** **IMPORTANT** (Your system may not boot or iServices may not work if this section is not configured properly!):
+
+7. **PlatformInfo**:
    - Download the latest version of [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) and run the .bat file if on windows, or the .command file if on macOS. 
    - Select option (1) to install/update MacSerial.
    - Select option (2) and drag and drop your config.plist file onto the open terminal window.
    - Select option (3) and enter `MacPro7,1`
    - If completed successfully, you should see what you just generated within `PlatformInfo -> Generic` (`MLB`, `ROM`, `SystemSerialNumber`, and `SystemUUID` should be populated).
-   
+> [!IMPORTANT]
+> Your system may not boot or iServices may not work if the following section is not configured properly!
+>    
    
 
 ## Installation Guide:
