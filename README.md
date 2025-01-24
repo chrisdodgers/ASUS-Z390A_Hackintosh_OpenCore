@@ -32,7 +32,7 @@ This is an OpenCore EFI folder for running macOS Sequoia (15.x) on an ASUS Z390-
 | ------------------: | :-------------------------------------------- |
 | Motherboard         | ASUS Prime Z390-A |
 | Chipset             | Intel Z390 |
-| ASUS BIOS Version   | 2004 (Customized with an Apple logo instead of the ASUS logo) |
+| ASUS BIOS Version   | 2004 [(Customized with an Apple logo instead of the ASUS logo)](https://github.com/chrisdodgers/ASUS-PRIME-Z390A_Custom_AppleLogo_BIOS/tree/main) |
 | Processor           | Intel Core i9-9900K |
 | Memory              | 32GB Corsair DDR4 3000Mhz |
 | Storage             | 2TB Western Digital SN770 NVMe |
