@@ -11,18 +11,18 @@ This is an OpenCore EFI folder for running macOS Sequoia (15.x) on an ASUS Z390-
 
 ## What Works?
 
-- Wi-Fi/Bluetooth
-- Gigabit Ethernet
-- Handoff/Continuity features and Universal Control
-- Perfect Sleep/Hibernation (Including PowerNap)
-- Hardware DRM Support
-- Full dGPU Graphics Acceleration with multiple 1440p+ monitors
-- CPU Power Management
-- Rear Audio Outputs
-- USB 3.2, 3.1, 3.0, 2.0 (including USB-C ports)
+- Wi-Fi/Bluetooth ✅
+- Gigabit Ethernet ✅
+- Handoff/Continuity features and Universal Control ✅
+- Perfect Sleep/Hibernation (Including PowerNap) ✅
+- Hardware DRM Support ✅
+- Full dGPU Graphics Acceleration with multiple 1440p+ monitors ✅
+- CPU Power Management ✅
+- Case Headphone Jack and Rear Audio Outputs ✅
+- USB 3.2, 3.1, 3.0, 2.0 (including USB-C ports) ✅
 
 ### What doesn't work?
-- Case headphone output *(This could probably be fixed using a different layout-id for audio, but I use a dedicated USB audio interface so I never did investigate further on this.)*
+~~Case Headphone Output~~ - fixed in v1.0.1 of my EFI.
 
 
 
@@ -38,7 +38,7 @@ This is an OpenCore EFI folder for running macOS Sequoia (15.x) on an ASUS Z390-
 | Storage             | 2TB Western Digital SN770 NVMe |
 | Integrated Graphics | Intel UHD Graphics 630 |
 | Dedicated Graphics  | MSI RX 5700XT (AMD) |
-| Audio               | Realtek ALC1220 (layout-id:`11`)|
+| Audio               | Realtek ALC1220 (layout-id:`7`)|
 | Ethernet            | Intel i219-V Gigabit Ethernet|
 | Wi-Fi and Bluetooth  | Fenvi T919 (BCM4360)|
 
