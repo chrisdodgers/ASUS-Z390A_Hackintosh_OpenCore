@@ -40,7 +40,7 @@ This is an OpenCore EFI folder for running macOS Sequoia (15.x) on an ASUS Z390-
 | Dedicated Graphics  | MSI RX 5700XT (AMD) |
 | Audio               | Realtek ALC1220 (layout-id:`11`)|
 | Ethernet            | Intel i219-V Gigabit Ethernet|
-| WiFi and Bluetooth  | Fenvi T919 (BCM94360CD)|
+| WiFi and Bluetooth  | Fenvi T919 (BCM4360)|
 
 ### macOS-incompatible Components
 - **NVIDIA GPUs are NOT SUPPORTED!** (Make sure you have a compatible AMD dGPU by checking out the [supported GPU list](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html)). 
@@ -251,29 +251,32 @@ This portion of the guide I will not provide support for. This is well covered i
 
   
 ### Fixing Wifi (Fenvi T919):
-Since macOS 14+ dropped native support for BCM94360CD, we have to use Opencore Legacy Patcher (OCLP) to apply root-patches to restore wifi functionality. **NOTE: If you plan on using FileVault and want to patch wifi, make sure to follow this porition FIRST before turning on FileVault (optional)!**
+Since macOS 14+ dropped native support for the BCM4360 Wi-Fi chipset (which the Fenvi T919 has), we have to use Opencore Legacy Patcher (OCLP) to apply root patches to restore Wi-Fi functionality. **NOTE: If you plan on using FileVault and want to patch wifi, make sure to follow this porition FIRST before turning on FileVault (optional)!**
 
 1. **[Download and install the latest version of OCLP](https://github.com/dortania/OpenCore-Legacy-Patcher/releases)**
-2. **Apply Root-Patches**
+2. **Apply Root Patches**:
    - Once you launch OCLP, you should see an option that says *"Post-Install Root Patch"*. Select that and it should automatically detect that it needs to apply networking patches. 
 3. **Reboot and wifi should now properly work!** 
    - *(If you followed these steps and wifi still isn't working - try resetting your NVRAM like earlier in the installation guide)*
 4. (Optional - Now you can sign into your Apple ID in System Settings.)   
 4. (Optional - You can now move on to the FileVault portion of this guide.)
 
-### Enabling FileVault (Optional)
-I discovered when I tried to enable FileVault, I would get an "Invalid Password" error no matter how I tried to save my encryption keys. This is due to us being booted with Partial SIP instead of Full SIP. Partial SIP is required for OCLP root-patches to work. However, the only way I was able to setup FileVault was enabling Full SIP. The good news is FileVault will work just fine once we set SIP from Full to Partial after setting up FileVault!
+### Enabling FileVault (Optional):
+I discovered when I tried to enable FileVault, I would get an "Invalid Password" error no matter how I tried to save my encryption keys. This is due to us being booted with Partial SIP instead of Full SIP. Partial SIP is required for OCLP root-patches to work. However, the only way I was able to setup FileVault was temporarily enabling Full SIP. The good news is FileVault will work just fine once we set SIP from Full to Partial after setting up FileVault!
 
-1. **Enable Full SIP**
-   - Go to `NVRAM -> csr-active-config` in your config.plist and set the value to `00000000`
+1. **Enable Full SIP**:
+   - Go to `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> csr-active-config` in your config.plist and set the value to `00000000`
    - Reboot system. (I would recommend like earlier in the installation guide to reset your NVRAM.)
-2. **Enable FileVault in System Settings**
+2. **Enable FileVault in System Settings**:
    - At this point before enabling FileVault, in System Settings you could go ahead and sign-in with your Apple ID. Doing so before turning on FileVault will allow you the option to save your encryption key to iCloud.
    - Enable FileVault and be patient while FileVault encrypts your volume.
-3. **Enable Full SIP**
-   - Now that FileVault has completed its setup, go ahead and go back to Partial SIP by setting the `NVRAM -> csr-active-config` value back to `03080000`.
-   - Reboot system. (Once again, I would recommend like earlier to reset your NVRAM.)   
-   
+3. **Enable Full SIP**:
+   - Now that FileVault has completed its setup, go ahead and go back to Partial SIP by setting the `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> csr-active-config` value back to `03080000`.
+   - Reboot system. (Once again, I would recommend that you reset your NVRAM.)   
+
+>[!NOTE]
+>For more information on fixing WiFi and setting up FileVault on macOS Sequoia, [here is my full guide](https://github.com/chrisdodgers/Fix_Fenvi-T919_FileVault_macOS_Sequoia_15.x/tree/main)
+>  
 
 ### Fix AGDC (Only needed for AMD dGPUs using certain 1440p or 4k displays):
 This is only required for some situations with AMD dGPUs. This was required for my configuration with my RX 5700xt and dual 1440p monitors. This is already configured in the EFI you downloaded. If you do not need this fix, you can simply remove it from DeviceProperties.
