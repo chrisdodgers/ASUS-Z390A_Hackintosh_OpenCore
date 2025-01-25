@@ -11,7 +11,7 @@ This is an OpenCore EFI folder for running macOS Sequoia (15.x) on an ASUS Z390-
 
 ## What Works?
 
-- Wifi/Bluetooth
+- Wi-Fi/Bluetooth
 - Gigabit Ethernet
 - Handoff/Continuity features and Universal Control
 - Perfect Sleep/Hibernation (Including PowerNap)
@@ -40,7 +40,7 @@ This is an OpenCore EFI folder for running macOS Sequoia (15.x) on an ASUS Z390-
 | Dedicated Graphics  | MSI RX 5700XT (AMD) |
 | Audio               | Realtek ALC1220 (layout-id:`11`)|
 | Ethernet            | Intel i219-V Gigabit Ethernet|
-| WiFi and Bluetooth  | Fenvi T919 (BCM4360)|
+| Wi-Fi and Bluetooth  | Fenvi T919 (BCM4360)|
 
 ### macOS-incompatible Components
 - **NVIDIA GPUs are NOT SUPPORTED!** (Make sure you have a compatible AMD dGPU by checking out the [supported GPU list](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html)). 
@@ -184,7 +184,7 @@ Download and extract the EFI Folder found in the Releases section of this repo.
 > Your system may not boot if this kernel section is not configured properly!
 > 
 
-3. **Wifi and Bluetooth**: This guide assumes you have a Fenvi T919 Wifi/Bluetooth card which is a BCM94360CD. Bluetooth/Wifi is required for Handoff/Continuity features to work! Intel Wifi/Bluetooth cards most likely will break many Handoff/Continuity features. If you plan on using an Intel card, you will need to follow [this portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/ktext.html#wifi-and-bluetooth) as it will not be covered in my guide/repo. *(If you do not care about wifi/bluetooth and handoff/continuity features and do not want it - this can be fully ignored.)*   
+3. **Wi-Fi and Bluetooth**: This guide assumes you have a Fenvi T919 Wi-Fi/Bluetooth card which has a BCM4360 chipset. Bluetooth/Wi-Fi is required for Handoff/Continuity/UC features to work! Intel Wi-Fi/Bluetooth cards most likely will break or not have many Handoff/Continuity/UC features. If you plan on using an Intel card, you will need to follow [this portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/ktext.html#wifi-and-bluetooth) as it will not be covered in my guide/repo. *(If you do not care about wifi/bluetooth and handoff/continuity features and do not want it - this can be fully ignored.)*   
 
 4. **Additional Kexts**:
    - I did not include [VoodooPS2.kext](https://github.com/acidanthera/VoodooPS2/releases) which is only needed if you plan on using a PS/2 Keyboard or Mouse. (You most will not likely need this.)
@@ -204,7 +204,7 @@ Download and extract the EFI Folder found in the Releases section of this repo.
    - `boot-args`:  
       - `agdpmod=pikera` is added here as I am using an AMD RX 5700XT. This boot-arg is ONLY required for RX 5000 and RX 6000 series GPUs, so remove this if you are not using a GPU that requires this! 
       - `-v debug=0x100 keepsyms=1`*(Optional - if you need additional debugging enabled.*)
-   - `csr-active-config`: The current specified value is `03080000`**(Partial SIP)**. This is required for root-patching wifi in macOS 14+ using [OCLP](https://github.com/dortania/OpenCore-Legacy-Patcher/releases). If you are running macOS 13 or older, or do not plan on using/patching wifi on macOS 14+ - you can fully enable SIP by setting the value to `00000000`**(Full SIP)**.
+   - `csr-active-config`: The current specified value is `03080000`**(Partial SIP)**. This is required for root patching wifi in macOS 14+ using [OCLP](https://github.com/dortania/OpenCore-Legacy-Patcher/releases). If you are running macOS 13 or older, or do not plan on using/patching Wi-Fi on macOS 14+ - you can fully enable SIP by setting the value to `00000000`**(Full SIP)**.
 
 
 7. **PlatformInfo**:
@@ -251,12 +251,12 @@ This portion of the guide I will not provide support for. This is well covered i
 
   
 ### Fixing Wifi (Fenvi T919):
-Since macOS 14+ dropped native support for the BCM4360 Wi-Fi chipset (which the Fenvi T919 has), we have to use Opencore Legacy Patcher (OCLP) to apply root patches to restore Wi-Fi functionality. **NOTE: If you plan on using FileVault and want to patch wifi, make sure to follow this porition FIRST before turning on FileVault (optional)!**
+Since macOS 14+ dropped native support for the BCM4360 Wi-Fi chipset (which the Fenvi T919 has), we have to use OpenCore Legacy Patcher (OCLP) to apply root patches to restore Wi-Fi functionality. **NOTE: If you plan on using FileVault and want to patch Wi-Fi, make sure to follow this porition FIRST before turning on FileVault (optional)!**
 
 1. **[Download and install the latest version of OCLP](https://github.com/dortania/OpenCore-Legacy-Patcher/releases)**
 2. **Apply Root Patches**:
    - Once you launch OCLP, you should see an option that says *"Post-Install Root Patch"*. Select that and it should automatically detect that it needs to apply networking patches. 
-3. **Reboot and wifi should now properly work!** 
+3. **Reboot and Wi-Fi should now properly work!** 
    - *(If you followed these steps and wifi still isn't working - try resetting your NVRAM like earlier in the installation guide)*
 4. (Optional - Now you can sign into your Apple ID in System Settings.)   
 4. (Optional - You can now move on to the FileVault portion of this guide.)
@@ -270,12 +270,12 @@ I discovered when I tried to enable FileVault, I would get an "Invalid Password"
 2. **Enable FileVault in System Settings**:
    - At this point before enabling FileVault, in System Settings you could go ahead and sign-in with your Apple ID. Doing so before turning on FileVault will allow you the option to save your encryption key to iCloud.
    - Enable FileVault and be patient while FileVault encrypts your volume.
-3. **Enable Full SIP**:
+3. **Enable Partial SIP**:
    - Now that FileVault has completed its setup, go ahead and go back to Partial SIP by setting the `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> csr-active-config` value back to `03080000`.
    - Reboot system. (Once again, I would recommend that you reset your NVRAM.)   
 
 >[!NOTE]
->For more information on fixing WiFi and setting up FileVault on macOS Sequoia, [here is my full guide](https://github.com/chrisdodgers/Fix_Fenvi-T919_FileVault_macOS_Sequoia_15.x/tree/main)
+>For more information on fixing Wi-Fi and setting up FileVault on macOS Sequoia, [here is my full guide](https://github.com/chrisdodgers/Fix_Fenvi-T919_FileVault_macOS_Sequoia_15.x/tree/main)
 >  
 
 ### Fix AGDC (Only needed for AMD dGPUs using certain 1440p or 4k displays):
