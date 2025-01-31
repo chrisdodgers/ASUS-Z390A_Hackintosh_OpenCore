@@ -18,6 +18,7 @@ This is an OpenCore EFI folder for running macOS Sequoia (15.x) on an ASUS Z390-
 - Hardware DRM Support ✅
 - Full dGPU Graphics Acceleration with multiple 1440p+ monitors ✅
 - CPU Power Management ✅
+-   FileVault ✅
 - Case Headphone Jack and Rear Audio Outputs ✅
 - USB 3.2, 3.1, 3.0, 2.0 (including USB-C ports) ✅
 
@@ -153,7 +154,7 @@ Please read the Dortania guide and guide notes here very carefully and thoroughl
 
 
 ### Generate your own SSDTs using SSDTTime (Optional, but highly recommended!):
-- The SSDT files found in my EFI folder (`EFI -> OC -> ACPI`) I generated using [SSDTTime](https://github.com/corpnewt/SSDTTime). Mine were generated for my exact configuration. Your configuration may differ slightly from mine, so it is HIGHLY RECOMMENDED to generate your own SSDT files as it is very easy to do.
+- The SSDT files found in my EFI folder (`EFI -> OC -> ACPI`) I generated using [SSDTTime](https://github.com/corpnewt/SSDTTime). Mine were generated for my exact configuration. Your configuration may differ slightly from mine, so it is highly recommended to generate your own SSDT files as it is very easy to do:
    1. Run SSDTTime.bat in Windows as an Administrator
    2. Select option `P`(Dump DSDT)
    3. Select the following options to generate: `2`(FakeEC), `4`(USBX), `5`(PluginType), `6`(PMC), `7`(RTCAWAC).
@@ -165,7 +166,7 @@ Download and extract the EFI Folder found in the Releases section of this repo.
 - **NOTE: ONLY use [ProperTree Editor](https://github.com/corpnewt/ProperTree) for making any edits to config.plist.** OCAT and other configurator tools are known for breaking configurations! You have been warned!
 
 
-1. **DeviceProperties**: This guide assumes you have an AMD dGPU to drive your display. The framebuffer already specified in my EFI is `AAPL,ig-platform-id 0300913E` which is a headless framebuffer used for this scenario. If you are not using an AMD dGPU to drive your displays, you will need to specify another framebuffer! 
+1. **DeviceProperties**: This guide assumes you have an AMD dGPU to drive your display(s). The framebuffer already specified in my EFI is `AAPL,ig-platform-id 0300913E` which is a headless framebuffer used for this scenario. If you are not using an AMD dGPU to drive your display(s), you will need to specify another framebuffer! 
 
 > [!WARNING]
 > 
@@ -184,14 +185,14 @@ Download and extract the EFI Folder found in the Releases section of this repo.
 > Your system may not boot if this kernel section is not configured properly!
 > 
 
-3. **Wi-Fi and Bluetooth**: This guide assumes you have a Fenvi T919 Wi-Fi/Bluetooth card which has a BCM4360 chipset. Bluetooth/Wi-Fi is required for Handoff/Continuity/UC features to work! Intel Wi-Fi/Bluetooth cards most likely will break or not have many Handoff/Continuity/UC features. If you plan on using an Intel card, you will need to follow [this portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/ktext.html#wifi-and-bluetooth) as it will not be covered in my guide/repo. *(If you do not care about wifi/bluetooth and handoff/continuity features and do not want it - this can be fully ignored.)*   
+3. **Wi-Fi and Bluetooth**: This guide assumes you have a Fenvi T919 Wi-Fi/Bluetooth card which has a BCM4360 chipset. Bluetooth/Wi-Fi is required for Handoff/Continuity/UC features to work! Intel Wi-Fi/Bluetooth cards most likely will break, or not have many Handoff/Continuity/UC features. If you plan on using an Intel card, you will need to follow [this portion of the Dortania guide](https://dortania.github.io/OpenCore-Install-Guide/ktext.html#wifi-and-bluetooth) as it will not be covered in my guide. *(If you do not care about Wi-Fi/Bluetooth and Handoff/Continuity features and do not want it - this can be fully ignored.)*   
 
 4. **Additional Kexts**:
    - I did not include [VoodooPS2.kext](https://github.com/acidanthera/VoodooPS2/releases) which is only needed if you plan on using a PS/2 Keyboard or Mouse. (You most will not likely need this.)
-   - My NVMe drive does not require [NVMeFix.kext](https://github.com/acidanthera/NVMeFix), so I did not include it in my EFI. Your NVMe drive may require this! [*Check the compatibility of your NVMe drive.*](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/Storage.html)
+   - My particular NVMe drive does not require [NVMeFix.kext](https://github.com/acidanthera/NVMeFix), so I did not include it in my EFI. Your NVMe drive may require this! [*Check the compatibility of your NVMe drive.*](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/Storage.html)
 
 > [!NOTE]   
->If you add these optional kexts into the `EFI -> OC -> Kexts`, you will need to do an OC Snapshot in ProperTree. You can do this by selecting `"File" -> "OC Snapshot"` in the menu and then select the OC folder in the EFI. An OC Snapshot automatically enables these kexts and automatically defines them in the `Kernel -> Add` section. 
+>If you add these optional kexts into the `EFI -> OC -> Kexts`, you will need to do an OC Snapshot in ProperTree. You can do this by selecting `"File" -> "OC Snapshot"` in the menu and then select the OC folder in the EFI. An OC Snapshot automatically adds/enables/orders these kexts in the `Kernel -> Add` section of the config.plist. 
 >
 
 5. **Misc**(optional):
@@ -201,6 +202,8 @@ Download and extract the EFI Folder found in the Releases section of this repo.
 6. **NVRAM**:
    - `rtc-blacklist` has been set to `5859`. This was configured as macOS kept writing to RTC memory regions which caused the system to boot into safe-mode after a reboot/shutdown. This value should work for most Z390 systems. However if this value does not work for you, you can follow [the RTC fix portion of the Dortania guide](https://dortania.github.io/OpenCore-Post-Install/misc/rtc.html#finding-our-bad-rtc-region)
    - `revblock` has `pci` enabled which prevents us from seeing a PCI warning on each boot. This is specific to using MacPro7,1 as our SMBIOS. 
+   - `revpatch` has `sbvmm` enabled which allows us to recieve macOS updates in System Settings. 
+   - `OCLP-Settings` was added with `-allow_fv`. This is required to use OCLP with FileVault enabled.
    - `boot-args`:  
       - `agdpmod=pikera` is added here as I am using an AMD RX 5700XT. This boot-arg is ONLY required for RX 5000 and RX 6000 series GPUs, so remove this if you are not using a GPU that requires this! 
       - `-v debug=0x100 keepsyms=1`*(Optional - if you need additional debugging enabled.*)
@@ -214,17 +217,16 @@ Download and extract the EFI Folder found in the Releases section of this repo.
    - Select option (3) and enter `MacPro7,1`
    - If completed successfully, you should see what you just generated within `PlatformInfo -> Generic` (`MLB`, `ROM`, `SystemSerialNumber`, and `SystemUUID` should be populated).
 > [!IMPORTANT]
-> Your system may not boot and or iServices may not work if this section is not configured properly!
+> iServices will not work if you do not configure this!
 >    
    
 
 ## Installation Guide:
-This portion of the guide I will not provide support for. This is well covered in the [Dortania Guide]((https://dortania.github.io/OpenCore-Install-Guide/installer-guide/))
+This portion of the guide I will not provide support for. This is well covered in the [Dortania Guide](https://dortania.github.io/OpenCore-Install-Guide/installer-guide/).
 
 1. **Create a bootable USB macOS Sequoia installer.**
 
-2. **Copy the EFI folder to the bootable USB**
-   - Run [MountEFI](https://github.com/corpnewt/MountEFI) to mount the EFI partition of your bootable USB drive. Once the EFI partition is mounted, you can copy my EFI folder there.
+2. **Copy my EFI folder to the bootable USB**
 
 3. **Boot into OpenCore and reset NVRAM**
    - Once you see the OpenCore BootPicker, press the Space Bar which will show some hidden tools. Select "ResetNvramEntry.efi and it should reboot your system. 
@@ -236,13 +238,13 @@ This portion of the guide I will not provide support for. This is well covered i
    - Follow the macOS installation instructions on your screen. Once the installer has completed, you should be able to follow the welcome/setup screen instructions to create an account and then get to the desktop. 
 
 > [!WARNING]
->  Do NOT sign in with your Apple ID at the setup screen! Sign in with your Apple ID once we have root-patched wifi. *This is so we can ensure Handoff/Continuity features work properly. Since wifi at this point in the guide is broken, there is a chance signing in before fixing wifi could cause some slight issues with Handoff/Continuity down the line.* 
+>  I would recommend that you do NOT sign in with your Apple ID at the setup screen! Sign in with your Apple ID once we have root-patched wifi. *This is so we can ensure Handoff/Continuity features work properly. Since Wi-Fi at this point in the guide is broken, there is a chance signing in before fixing wifi could cause some slight issues with Handoff/Continuity down the line.* 
 >
 
    
 ## Post-Installation Guide:
 ### Boot macOS Without a USB Drive:
-- Run MountEFI and select your installation USB and the drive you installed macOS on.
+- Run [MountEFI](https://github.com/corpnewt/MountEFI) and select your installation USB and the drive you installed macOS on.
 - Copy your EFI folder from your USB EFI partition to your internal drives EFI partition
 
 > [!NOTE]
@@ -251,7 +253,7 @@ This portion of the guide I will not provide support for. This is well covered i
 
   
 ### Fixing Wifi (Fenvi T919):
-Since macOS 14+ dropped native support for the BCM4360 Wi-Fi chipset (which the Fenvi T919 has), we have to use OpenCore Legacy Patcher (OCLP) to apply root patches to restore Wi-Fi functionality. **NOTE: If you plan on using FileVault and want to patch Wi-Fi, make sure to follow this porition FIRST before turning on FileVault (optional)!**
+Since macOS 14+ dropped native support for the BCM4360 Wi-Fi chipset (which the Fenvi T919 has), we have to use OpenCore Legacy Patcher (OCLP) to apply root patches to restore Wi-Fi functionality. 
 
 1. **[Download and install the latest version of OCLP](https://github.com/dortania/OpenCore-Legacy-Patcher/releases)**
 2. **Apply Root Patches**:
@@ -259,23 +261,10 @@ Since macOS 14+ dropped native support for the BCM4360 Wi-Fi chipset (which the 
 3. **Reboot and Wi-Fi should now properly work!** 
    - *(If you followed these steps and wifi still isn't working - try resetting your NVRAM like earlier in the installation guide)*
 4. (Optional - Now you can sign into your Apple ID in System Settings.)   
-4. (Optional - You can now move on to the FileVault portion of this guide.)
 
-### Enabling FileVault (Optional):
-I discovered when I tried to enable FileVault, I would get an "Invalid Password" error no matter how I tried to save my encryption keys. This is due to us being booted with Partial SIP instead of Full SIP. Partial SIP is required for OCLP root-patches to work. However, the only way I was able to setup FileVault was temporarily enabling Full SIP. The good news is FileVault will work just fine once we set SIP from Full to Partial after setting up FileVault!
-
-1. **Enable Full SIP**:
-   - Go to `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> csr-active-config` in your config.plist and set the value to `00000000`
-   - Reboot system. (I would recommend like earlier in the installation guide to reset your NVRAM.)
-2. **Enable FileVault in System Settings**:
-   - At this point before enabling FileVault, in System Settings you could go ahead and sign-in with your Apple ID. Doing so before turning on FileVault will allow you the option to save your encryption key to iCloud.
-   - Enable FileVault and be patient while FileVault encrypts your volume.
-3. **Enable Partial SIP**:
-   - Now that FileVault has completed its setup, go ahead and go back to Partial SIP by setting the `NVRAM -> Add -> 7C436110-AB2A-4BBB-A880-FE41995C9F82 -> csr-active-config` value back to `03080000`.
-   - Reboot system. (Once again, I would recommend that you reset your NVRAM.)   
-
+ 
 >[!NOTE]
->For more information on fixing Wi-Fi and setting up FileVault on macOS Sequoia, [here is my full guide](https://github.com/chrisdodgers/Fix_Fenvi-T919_FileVault_macOS_Sequoia_15.x/tree/main)
+>For more detailed information on fixing Wi-Fi and setting up FileVault on macOS Sequoia, here is my full guide to [Fix Fenvi T919 Wi-Fi and FileVault on macOS Sequoia](https://github.com/chrisdodgers/Fix_Fenvi-T919_FileVault_macOS_Sequoia_15.x/tree/main)
 >  
 
 ### Fix AGDC (Only needed for AMD dGPUs using certain 1440p or 4k displays):
